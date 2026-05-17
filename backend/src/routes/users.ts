@@ -25,6 +25,9 @@ usersRouter.post('/sync', async (c) => {
     .select('id, line_user_id, display_name, is_admin, room_number')
     .single()
 
-  if (error) return c.json({ error: error.message }, 500)
+  if (error) {
+    console.error('users/sync error:', error.code, error.message, error.details)
+    return c.json({ error: error.message }, 500)
+  }
   return c.json(data)
 })
