@@ -9,6 +9,7 @@ export function useLiff() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    console.log('VITE_LIFF_ID:', import.meta.env.VITE_LIFF_ID)
     if (!LIFF_ID || !LIFF_ID.includes('-')) {
       setError(`LIFF IDが未設定または形式が不正です (値: "${LIFF_ID}")。Vercelの環境変数 VITE_LIFF_ID を確認してください。`)
       return
