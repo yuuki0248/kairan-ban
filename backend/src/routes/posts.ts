@@ -79,17 +79,16 @@ postsRouter.post('/', authMiddleware, adminMiddleware, async (c) => {
   if (error) return c.json({ error: error.message }, 500)
 
   // 投稿者以外の全住民へ非同期でLINEプッシュ通知（失敗しても投稿は成功扱い）
-  supabase
-    .from('users')
-    .select('line_user_id')
-    .neq('line_user_id', user.line_user_id)
-    .then(({ data: recipients }) => {
-      if (!recipients?.length) return
-      const ids = recipients.map((u) => u.line_user_id)
-      const message = `【新着お知らせ】\n${title}\n\nアプリから詳細をご確認ください。`
-      return sendPushNotification(ids, message)
-    })
-    .catch(console.error)
+  void (async () => {
+    const { data: recipients } = await supabase
+      .from('users')
+      .select('line_user_id')
+      .neq('line_user_id', user.line_user_id)
+    if (!recipients?.length) return
+    const ids = recipients.map((u) => u.line_user_id)
+    const message = `【新着お知らせ】\n${title}\n\nアプリから詳細をご確認ください。`
+    await sendPushNotification(ids, message)
+  })().catch(console.error)
 
   return c.json(post, 201)
 })
