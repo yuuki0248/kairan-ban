@@ -47,6 +47,16 @@ export type Post = {
   read_count?: number
 }
 
+export type Me = {
+  id: string
+  line_user_id: string
+  display_name: string
+  is_admin: boolean
+  room_number: string | null
+}
+
+export const getMe = () => req<Me>('/users/me')
+
 export const getPosts = () => req<Post[]>('/posts')
 export const getPost = (id: string) => req<Post>(`/posts/${id}`)
 

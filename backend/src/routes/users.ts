@@ -1,7 +1,13 @@
 import { Hono } from 'hono'
+import { authMiddleware, type UserVar } from '../middleware/auth.js'
 import { supabase } from '../lib/supabase.js'
 
-export const usersRouter = new Hono()
+export const usersRouter = new Hono<UserVar>()
+
+// GET /users/me — 認証済みユーザー情報を返す
+usersRouter.get('/me', authMiddleware, (c) => {
+  return c.json(c.get('user'))
+})
 
 // POST /users/sync — LIFFプロフィールをDBにupsert（is_adminは変更しない）
 usersRouter.post('/sync', async (c) => {
