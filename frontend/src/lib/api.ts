@@ -83,3 +83,59 @@ export type ReadsResponse = {
 }
 
 export const getReads = (postId: string) => req<ReadsResponse>(`/reads/${postId}`)
+
+// ---- Surveys ----
+
+export type Question = { id: string; text: string; options: string[] }
+
+export type Survey = {
+  id: string
+  title: string
+  questions: Question[]
+  author_id: string | null
+  author: { display_name: string } | null
+  created_at: string
+  is_answered: boolean
+}
+
+export type SurveyDetail = {
+  id: string
+  title: string
+  questions: Question[]
+  author_id: string | null
+  author: { display_name: string } | null
+  created_at: string
+  my_answer: Record<string, string> | null
+}
+
+export type SurveyResults = {
+  survey: { id: string; title: string; questions: Question[]; created_at: string }
+  tally: Record<string, Record<string, number>>
+  total: number
+}
+
+export const getSurveys = () => req<Survey[]>('/surveys')
+export const getSurvey = (id: string) => req<SurveyDetail>(`/surveys/${id}`)
+export const createSurvey = (data: { title: string; questions: Question[] }) =>
+  req<Survey>('/surveys', { method: 'POST', body: JSON.stringify(data) })
+export const answerSurvey = (id: string, answers: Record<string, string>) =>
+  req<{ ok: boolean }>(`/surveys/${id}/answers`, { method: 'POST', body: JSON.stringify({ answers }) })
+export const getSurveyResults = (id: string) => req<SurveyResults>(`/surveys/${id}/results`)
+
+// ---- Inquiries ----
+
+export type Inquiry = {
+  id: string
+  user_id: string
+  category: string
+  body: string
+  status: 'pending' | 'in_progress' | 'done'
+  created_at: string
+  user: { display_name: string; room_number: string | null } | null
+}
+
+export const getInquiries = () => req<Inquiry[]>('/inquiries')
+export const createInquiry = (data: { category: string; body: string }) =>
+  req<Inquiry>('/inquiries', { method: 'POST', body: JSON.stringify(data) })
+export const updateInquiryStatus = (id: string, status: Inquiry['status']) =>
+  req<Inquiry>(`/inquiries/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) })

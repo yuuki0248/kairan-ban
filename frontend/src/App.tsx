@@ -3,6 +3,11 @@ import { useLiff } from './hooks/useLiff'
 import Home from './pages/Home'
 import Detail from './pages/Detail'
 import Admin from './pages/Admin'
+import SurveyList from './pages/SurveyList'
+import SurveyDetail from './pages/SurveyDetail'
+import InquiryPage from './pages/InquiryPage'
+import AdminSurveys from './pages/AdminSurveys'
+import AdminInquiries from './pages/AdminInquiries'
 
 export default function App() {
   const { isReady, error } = useLiff()
@@ -30,7 +35,13 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/posts/:id" element={<Detail />} />
+        <Route path="/surveys" element={<SurveyList />} />
+        <Route path="/surveys/:id" element={<SurveyDetail />} />
+        <Route path="/inquiry" element={<InquiryPage />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/surveys" element={<AdminSurveys />} />
+        <Route path="/admin/surveys/:id/results" element={<AdminSurveys />} />
+        <Route path="/admin/inquiries" element={<AdminInquiries />} />
       </Routes>
     </BrowserRouter>
   )

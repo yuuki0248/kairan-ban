@@ -39,6 +39,21 @@ export default function Home() {
         )}
       </div>
 
+      <nav className="flex gap-2 mb-5">
+        <Link
+          to="/surveys"
+          className="flex-1 text-center text-sm bg-indigo-50 text-indigo-600 rounded-lg py-2.5 font-medium hover:bg-indigo-100 transition-colors"
+        >
+          アンケート
+        </Link>
+        <Link
+          to="/inquiry"
+          className="flex-1 text-center text-sm bg-teal-50 text-teal-600 rounded-lg py-2.5 font-medium hover:bg-teal-100 transition-colors"
+        >
+          お問い合わせ
+        </Link>
+      </nav>
+
       {loading && (
         <p className="text-center text-gray-400 py-16 text-sm">読み込み中...</p>
       )}

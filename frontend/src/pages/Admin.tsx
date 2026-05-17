@@ -37,6 +37,21 @@ export default function Admin() {
         </div>
       )}
 
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        <Link
+          to="/admin/surveys"
+          className="text-center text-sm bg-indigo-50 text-indigo-600 rounded-lg py-3 font-medium hover:bg-indigo-100 transition-colors"
+        >
+          アンケート管理
+        </Link>
+        <Link
+          to="/admin/inquiries"
+          className="text-center text-sm bg-teal-50 text-teal-600 rounded-lg py-3 font-medium hover:bg-teal-100 transition-colors"
+        >
+          問い合わせ管理
+        </Link>
+      </div>
+
       <PostForm onSuccess={handleSuccess} />
     </div>
   )
