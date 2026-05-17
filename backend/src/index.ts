@@ -12,9 +12,9 @@ const app = new Hono()
 app.use('*', logger())
 app.use('*', cors())
 
-app.route('/posts', postsRouter)
-app.route('/reads', readsRouter)
-app.route('/users', usersRouter)
+app.route('/api/posts', postsRouter)
+app.route('/api/reads', readsRouter)
+app.route('/api/users', usersRouter)
 
 app.get('/health', (c) => c.json({ ok: true }))
 
