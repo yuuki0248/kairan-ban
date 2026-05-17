@@ -16,16 +16,21 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>
 }
 
-export function syncUser(data: {
+export async function syncUser(data: {
   line_user_id: string
   display_name: string
   room_number?: string
 }) {
-  return fetch(`${BASE}/users/sync`, {
+  const res = await fetch(`${BASE}/users/sync`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  }).then((r) => r.json())
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: res.statusText }))
+    throw new Error((err as { error?: string }).error ?? res.statusText)
+  }
+  return res.json()
 }
 
 export type Post = {
