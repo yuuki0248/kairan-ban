@@ -2,13 +2,18 @@ import { useState, useEffect } from 'react'
 import liff from '@line/liff'
 import { syncUser } from '../lib/api'
 
-const LIFF_ID = import.meta.env.VITE_LIFF_ID as string
+const LIFF_ID: string = import.meta.env.VITE_LIFF_ID ?? ''
 
 export function useLiff() {
   const [isReady, setIsReady] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    if (!LIFF_ID || !LIFF_ID.includes('-')) {
+      setError(`LIFF IDが未設定または形式が不正です (値: "${LIFF_ID}")。Vercelの環境変数 VITE_LIFF_ID を確認してください。`)
+      return
+    }
+
     liff
       .init({ liffId: LIFF_ID })
       .then(async () => {
